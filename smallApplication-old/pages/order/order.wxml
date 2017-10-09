@@ -1,0 +1,83 @@
+<!--logs.wxml-->
+<view wx:if='{{isLogin}}'>
+  <block wx:for="{{orderList}}" wx:for-item="order">
+    <view class="order-list-item">
+      <view class="flex-noCenter">
+        <view class="order-list-item-logo">
+          <image src="{{order.cover}}" class="order-list-item-logo-img"></image>
+        </view>
+        <view class="order-list-item-content">
+          <navigator url="../shop/shop?tenant_id={{order.tenant_id}}"  hover-class="hover-class">
+            <view class="order-list-item-content-main">
+              <view class="flex-between order-list-item-content-title">
+                <view class="classname">{{order.tenant_name}}</view>
+                <block wx:if="{{order.order_state == 7}}">
+                  <text class="order-list-item-content-status">已下单</text>
+                </block> 
+                <block wx:if="{{order.order_state == 8}}">
+                  <text class="order-list-item-content-status">已确认</text>
+                </block>
+                <block wx:if="{{order.order_state == 9}}">
+                  <text class="order-list-item-content-status">上菜中</text>
+                </block> 
+                <block wx:if="{{order.order_state == 10}}">
+                  <text class="order-list-item-content-status">完成上菜</text>
+                </block>
+                <block wx:if="{{order.order_state == 11}}">
+                  <text class="order-list-item-content-status">已完成</text>
+                </block> 
+                <block wx:if="{{order.order_state == 15}}">
+                  <text class="order-list-item-content-status">续单待确认</text>
+                </block> 
+                <block wx:if="{{order.order_state == 17}}">
+                  <text class="order-list-item-content-status">取消订单</text>
+                </block> 
+              </view>
+              <view class="order-list-item-content-time">{{order.create_at}}</view>
+            </view>
+          </navigator>
+          <navigator url="../order-detail/order-detail?order_num={{order.order_num}}"  hover-class="none">
+            <view class="order-list-item-content-detail flex-between">
+              <view class="classname">共{{order.sum}}个商品</view>
+              <text class="order-list-item-content-detail-sum">{{order.total}}</text>
+            </view>
+          </navigator>
+        </view>
+      </view>
+      <view class="order-list-item-footer flex-end">
+        <button class="orderAgain" wx:if="{{order.order_state != 17 &&  order.order_state != 11}}" data-tenantid="{{order.tenant_id}}" bindtap='goShop'>继续点菜</button>
+         <button class="orderAgain" wx:if="{{order.order_state == 17 ||  order.order_state == 11}}" data-tenantid="{{order.tenant_id}}" bindtap='goShop'>再来一单</button>
+        <button class="orderAgain orderPay" wx:if="{{order.order_state != 17 &&  order.order_state != 11}}">去支付</button>
+      </view>
+    </view>
+  </block>
+  <block wx:if="{{orderList.length != 0}}">
+    <view class="weui-loadmore" hidden="{{isHideLoadMore}}">
+    <view class="weui-loading"></view>
+    </view> 
+    <view class="weui-loadmore-none" hidden="{{!isHideLoadMore}}" wx:if="{{isRefresh}}">
+      没有更多啦
+    </view>
+  </block>
+  <block wx:if="{{orderList.length == 0}}">
+    <view class="container">
+      <view class="text-center">
+        <view><icon type="warn" size="40" color=""/></view>
+        <view class="closed">暂无订单</view>
+      </view>
+    </view>
+  </block>
+</view>
+ <block wx:else>
+    <navigator url="../login/login"  hover-class="none">
+      <view class="informationContainer">
+        <view class="informationContent">
+          <view class="userNmae">去登录</view>
+          <view class="userPhone">
+            <text>登陆查看我的订单</text>
+          </view>
+        </view>
+        <image src="../../images/right.png" class="informationRight"></image>
+      </view>
+    </navigator>
+  </block>

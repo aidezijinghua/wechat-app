@@ -1,0 +1,52 @@
+Page{
+  background-color: #f5f5f5
+}
+.section{
+  padding-top: 20rpx;
+  padding-bottom: 20rpx;
+  padding-left: 20rpx;
+  background-color: #fff;
+  font-size: 28rpx;
+}
+.telInputContainer{
+  margin-top: 40rpx;
+  border-bottom: 1rpx solid #eee;
+  position: relative
+}
+.getPwd{
+  position: absolute;
+  color: #ccc;
+  right: 20rpx;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  z-index: 10
+}
+.fullInput{
+  background-color: #fff;
+}
+.content{
+  padding-left: 20rpx;
+  padding-right: 20rpx
+}
+.loginBtn{
+  background-color: #f65b25;
+  color: #fff;
+  margin-top: 60rpx
+}
+.content-text{
+  margin-top: 24rpx;
+  color: #999;
+  font-size: 28rpx;
+  line-height: 40rpx
+}
+.aboutUs{
+  margin-top: 40rpx;
+  font-size: 24rpx;
+  color: #999;
+  text-align: center
+}
+.validTel{
+  color: #f65b25
+}

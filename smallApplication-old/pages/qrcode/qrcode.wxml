@@ -1,0 +1,14 @@
+<!--qrcode.wxml-->
+ <!-- <view class="lineContent" bindtap='qrcode'>
+  <view class="lineContentLogo">
+    <image src="../../images/qrcodeL.png" class="img100"></image>
+  </view>
+  <view class="lineContentText">
+    <text>扫一扫</text>
+    <image src="../../images/right-grey.png" class="lineContentRight"></image>
+  </view>
+</view> 
+
+<view class="xn-toast" wx:if="{{isShowToast}}">
+  {{toastText}}
+</view> -->

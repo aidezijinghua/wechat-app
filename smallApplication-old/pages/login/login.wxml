@@ -1,0 +1,23 @@
+<!--login.wxml-->
+<view>
+  <view class="section telInputContainer">
+    <input placeholder="手机号" class="fullInput" type="number" bindinput="telInput"/>
+    <view class="getPwd {{validTel ? 'validTel' : ''}}" catchtap="getPwd" wx:if="{{!showSecond}}">获取验证码</view>
+    <view class="getPwd" wx:if="{{showSecond}}">已发送({{second}}s)</view>
+  </view>
+  <view class="section">
+    <input placeholder="验证码" class="fullInput" type="number" bindinput="pwdInput"/>
+  </view>
+</view>
+<view class="content">
+  <view class="content-text">
+      温馨提示：未注册学牛网订餐帐号的手机号，登录时将自动注册，且代表您已同意
+      <text style="color:#2395ff">《用户服务协议》</text>
+  </view>
+  <button class="loginBtn" bindtap="login">登录</button>
+  <view class="aboutUs">关于我们</view>
+</view>
+
+<view class="xn-toast" wx:if="{{isShowToast}}">
+  {{toastText}}
+</view>

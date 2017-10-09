@@ -1,0 +1,94 @@
+<!--logs.wxml-->
+<view>
+  <view class="orderInfoContainer">
+    <view class="flex orderInfoHead">
+      <image src="{{tenantData.cover}}" class="orderInfoHeadLogo" wx:if="{{tenantData.cover}}"></image>
+      <text>{{tenantData.tenant_name}}</text>
+    </view>
+    <view class="orderInfoContent">
+      <block wx:for="{{orderInfo.subOrder}}" wx:for-index="dishId">
+        <block>
+          <!--非规格商品  -->
+          <view class="flex orderInfoContentItem font28">
+            <text class="flex9 text-ellipsis">{{item.dish_name}}</text>
+            <text class="flex1">x {{item.dish_num}}</text>
+            <text class="flex2 alignRight">¥{{item.dish_sum}}</text>
+          </view>
+        </block>
+      </block>
+    </view>
+     <!-- <view class="orderInfoContent"> -->
+      <!-- <view class="flex-between orderInfoContentItem">
+        <text>配送费</text>
+        <text>¥2.5</text>
+      </view> -->
+      <!-- <view class="flex-between orderInfoContentItem">
+        <text>餐盒</text>
+        <text>¥2</text>
+      </view> -->
+    <!-- </view> -->
+    <view class="orderInfoContent font24">
+      <!-- <view class="flex-between orderInfoContentItem">
+        <view class="flex">
+          <text class="tip-jian">惠</text>
+          <text>限量抢购</text>
+        </view>
+        <view class="xn-color">- ¥21.1</view>
+      </view> -->
+      <view class="flex-between orderInfoContentItem">
+        <view class="flex">
+          <text class="tip-jian">减</text>
+          <text>优惠活动</text>
+        </view>
+        <view class="xn-color">- ¥{{orderInfo.discounts}}</view>
+      </view>
+    </view>  
+     <view class="orderInfoContent font26 fontWeight">
+      <view class="flex-between orderInfoContentItem">
+        <view class="flex">
+          <text>订单 ¥{{orderInfo.total}}</text>
+          <text decode="{{true}}">&nbsp;&nbsp;</text>
+          <text>优惠 ¥{{orderInfo.discounts}}</text> 
+        </view>
+        <view>待支付 ¥{{orderInfo.actual}}</view>
+      </view>
+    </view> 
+  </view>
+  <navigator url="../order-pre/order-pre?order_num={{order_num}}" wx:if="{{isOver == 'false'}}">
+      <view class="lineContent">
+        <view class="lineContentLogo">
+          <icon type="info" size="20" />
+        </view>
+        <view class="lineContentText">
+          <text>已下单菜品</text>
+          <image src="../../images/right-grey.png" class="lineContentRight"></image>
+        </view>
+      </view>
+    </navigator>
+  <view class="orderInfoContainer">
+    <view class="flex orderInfoHead">
+      <text class="font30 fontWeight">订单备注</text>
+    </view>
+    <view class="orderInfoContent font24">
+      <input placeholder="请输入用餐人数" class="fullInput" type="number" bindinput="setNumber"/>
+    </view>  
+    <view class="orderInfoContent font26 fontWeight">
+      <textarea placeholder="口味、偏好等" bindinput="setRemark" placeholder-style="color:#999;" maxlength="-1"/>
+    </view> 
+  </view>
+  <view class="bottomContainer flex-between">
+    <view>
+      <text class="font36">待支付 ¥{{orderInfo.actual}}</text>
+      <text class="font24 color999">｜优惠 ¥{{orderInfo.discounts}}</text>
+    </view>
+    <view class="confirmPay}}" bindtap="confirmPay">
+      <text wx:if="{{isOver != 'false'}}">确认下单</text>
+      <text wx:else>确认加菜</text>
+    </view>
+  </view>
+</view>
+
+<view class="xn-toast" wx:if="{{isShowToast}}">
+  {{toastText}}
+</view>
+

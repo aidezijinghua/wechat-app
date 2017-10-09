@@ -1,0 +1,106 @@
+<!--index.wxml-->
+<view class="page">
+  <swiper indicator-dots="true" autoplay="true" interval="5000" duration="1000" indicator-active-color="#f65b25">
+    <block wx:for="{{imgUrls}}">
+      <swiper-item>
+        <image src="{{item.img}}" class="slide-image"/>
+      </swiper-item>
+    </block>
+  </swiper>
+  <view class="nav-container">
+    <block wx:for="{{navImgUrLS}}">
+      <navigator url="../shopGroup/shopGroup?classify_id={{item.classify_id}}&name={{item.name}}" class="nav-link" hover-class="hover-class">
+        <view class="nav-item">
+          <image src="{{item.icon}}"/>
+          <text class="nav-item-text">{{item.name}}</text>
+        </view>
+      </navigator>
+    </block>
+  </view>
+  <view class="business-list">
+    <view class="index-title">推荐商家</view>
+    <block wx:for="{{businessList}}" wx:for-item="businessItem" wx:for-index="businessItemId">
+      <navigator url="../shop/shop?tenant_id={{businessItem.tenant_id}}"  hover-class="hover-class">
+        <view class="business-item">
+          <view class="business-item-logo">
+            <image src="{{businessItem.cover}}"/>
+          </view>
+          <view class="business-item-content">
+            <view class="business-item-content-top">
+              <view class="business-item-content-title-line">
+                <view class="business-item-content-line-title text-ellipsis">{{businessItem.tenant_name}}</view>
+                <!-- <view class="business-item-content-line-title-dec">保</view> -->
+              </view>
+              <view class="business-item-content-line">
+                <view class="business-item-content-line-left">
+                  <!-- <text class="center-margin">4.8分</text> -->
+                  <text>月售{{businessItem.order_num}}单</text>
+                </view>
+                <!-- <view class="business-item-content-line-right">
+                  <text class="tip-fengniao">蜂鸟专送</text>
+                </view> -->
+              </view>
+              <!-- <view class="business-item-content-line">
+                <view class="business-item-content-line-left">
+                  <text>￥20起送</text>
+                  <text class="split"></text>
+                  <text>配送费￥2.5</text>
+                </view>
+                <view class="business-item-content-line-left">
+                  <text>708m</text>
+                  <text class="split"></text>
+                  <text>25分钟</text>
+                </view>
+              </view> -->
+            </view>
+            <view class="flex-between" style="align-items : flex-start;">
+              <view class="business-item-content-add"  wx:if="{{businessItem.normal}}">
+                <block wx:for="{{businessItem.discount}}" wx:for-item="discountItem" wx:for-index="discountItemIndex">
+                  <view class="business-item-content-line">
+                    <view class="business-item-content-line-left">
+                      <block wx:if="{{discountItem.discount_type == 1}}">
+                        <text class="tip-jian">折</text>
+                      </block>
+                      <block wx:if="{{discountItem.discount_type == 2}}">
+                        <text class="tip-jian">减</text>
+                      </block> 
+                      <text>{{discountItem.discribe}}</text>
+                    </view>
+                  </view>
+                </block> 
+              </view>
+              <view class="business-item-content-add"  wx:else>
+                <block wx:for="{{businessItem.discount}}" wx:for-item="discountItem" wx:for-index="discountItemIndex" wx:if="{{discountItemIndex<2}}">
+                  <view class="business-item-content-line">
+                    <view class="business-item-content-line-left">
+                      <block wx:if="{{discountItem.discount_type == 1}}">
+                        <text class="tip-jian">折</text>
+                      </block>
+                      <block wx:if="{{discountItem.discount_type == 2}}">
+                        <text class="tip-jian">减</text>
+                      </block> 
+                      <text>{{discountItem.discribe}}</text>
+                    </view>
+                  </view>
+                </block> 
+              </view>
+              <block wx:if="{{businessItem.discount_length && businessItem.discount_length>0}}">
+                <view class="font20 color999 height100 discountToggle flex"  catchtap='toggleDiscount' data-id="{{businessItemId}}">
+                  <text>{{businessItem.discount_length}}个活动</text>
+                  <text class="{{businessItem.normal ?'triangle-up' : 'triangle-down'}}" 
+                  wx:if="{{businessItem.discount_length && businessItem.discount_length>2}}"></text>
+                </view>
+              </block>
+            </view>
+          </view>
+        </view>
+       </navigator>
+    </block>
+  </view>
+  <view class="weui-loadmore" hidden="{{isHideLoadMore}}">
+    <view class="weui-loading"></view>
+  </view> 
+  <view class="weui-loadmore-none" hidden="{{!isHideLoadMore}}" wx:if="{{isRefresh}}">
+    没有更多啦
+  </view>
+</view>

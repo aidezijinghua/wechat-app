@@ -1,0 +1,159 @@
+<!--order-detail.wxml-->
+<view>
+  <view class="order-detail-head">
+    <view class="order-detail-head-logo-container">
+      <image src="{{orderInfo.cover}}" class="order-detail-head-logo" wx:if="{{orderInfo.cover}}"></image>
+    </view>
+    <view class="font38 fontWeight">单号：{{orderInfo.order_id}}</view>
+    <view class="helpText">请记住自己的单号，单号是上菜的凭据</view>
+    <view>
+    <navigator url="../shop/shop?tenant_id={{orderInfo.tenant_id}}"  hover-class="none">
+      <button class="orderAgainBtn" wx:if="{{orderInfo.order_state != 17 &&  orderInfo.order_state != 11}}">继续点单</button>
+      <button class="orderAgainBtn" wx:else>再来一单</button>
+    </navigator>
+    </view>
+  </view>
+  <view class="order-detail-content">
+    <navigator url="../shop/shop?tenant_id={{orderInfo.tenant_id}}"  hover-class="hover-class">
+      <view class='order-detail-content-title flex-between'>
+        <view class='flex'>
+          <image src="{{orderInfo.cover}}" class="order-detail-content-title-logo" wx:if="{{orderInfo.cover}}"></image>
+          <text class="font28" style="color:#4d4d4d">{{orderInfo.tenant_name}}</text>
+        </view>
+        <image src="../../images/right-grey.png" class="lineContentRight"></image>
+      </view>
+    </navigator>
+    <block wx:for="{{orderInfo.subOrder}}" wx:for-item="subOrder" wx:for-index="subOrderIndex">
+      <view>
+        <view class="order-detail-content-section flex-between" bindtap='toggleSubOrder' data-sub="{{subOrderIndex}}">
+          <text class="color666">{{subOrder[0].dish_name}}等{{subOrder.length}}个商品</text>
+          <view class="flex">
+            <text class="color666">{{subOrder[0].create_at}}</text>
+            <text class="{{subOrderShow[subOrderIndex] ?'triangle-up' : 'triangle-down'}}"></text>
+          </view>
+        </view>
+        <block wx:if="{{subOrderShow[subOrderIndex]}}">
+          <view class="order-detail-content-section flex" wx:for="{{subOrder}}" style="padding-left:30rpx">
+            <block wx:if="{{item.dish_spec}}">
+              <text class="flex8 text-ellipsis color999">{{item.dish_name}}({{item.dish_spec}})</text>
+            </block> 
+            <block wx:else>
+              <text class="flex8 text-ellipsis color999">{{item.dish_name}}</text>
+            </block> 
+            <text class="flex1 color999">x {{item.dish_num}}</text>
+            <text class="flex2 alignRight color666">¥{{item.dish_sum}}</text>
+            <view class="flex1 alignRight">
+              <block wx:if="{{item.dish_state == 12}}">
+                <icon type="success" size="20"/>
+              </block> 
+              <block wx:if="{{item.dish_state == 13}}">
+                <icon type="cancel" size="20"/>
+              </block>
+              <block wx:if="{{item.dish_state == 14}}">
+                <icon type="waiting" size="20"/>
+              </block>
+            </view>
+          </view>
+        </block>
+      </view>
+    </block>
+    <view class="order-detail-content-section flex">
+      <text class="flex8 text-ellipsis color999">餐具</text>
+      <text class="flex1 color999">x {{orderInfo.number}}</text>
+      <text class="flex2 alignRight color666">¥{{orderInfo.base_cost * orderInfo.number}}</text>
+      <view class="flex1 alignRight"></view>
+    </view>
+    <view class='order-detail-content-section flex-between' wx:if="{{orderInfo.order_state != 17}}">
+      <view>
+        <text class="tip-jian">减</text>
+        <text class="color666">优惠金额</text>
+      </view>
+      <text class="xn-color">- ¥{{orderInfo.discount}}</text>
+    </view>
+    <view class='order-detail-content-section flex-between' wx:if="{{orderInfo.order_state != 17}}">
+      <view>
+        <text class="tip-jian" style="background-color:rgb(241, 136, 79)">实</text>
+        <text class="color666">优惠后金额</text>
+      </view>
+      <text class="color666">¥{{orderInfo.discounts}}</text>
+    </view>
+    <!-- <view class='order-detail-content-section flex-between'>
+      <view>
+        <text class="tip-jian" style="background-color:rgb(60, 199, 145);border-color:rgb(60, 199, 145);">赠</text>
+        <text>随机小菜1份</text>
+      </view>
+      <text class="xn-color">¥0</text>
+    </view> -->
+    <view class='order-detail-content-footer flex-end' wx:if="{{orderInfo.order_state != 17}}">
+      <view>
+        <text class="order-detail-content-footer-text1" style="color:#00d762">已付</text>
+        <text class="font36" style="color:#00d762">¥{{orderInfo.paid}}</text>
+      </view>
+      <view style="margin-left:15rpx">
+        <text class="order-detail-content-footer-text1">待支付</text>
+        <text class="font36">¥{{orderInfo.money}}</text>
+      </view>
+    </view>
+  </view>
+  <view class="order-detail-content">
+    <view class='order-detail-content-title flex-between'>
+      <text class="font28" style="color:#4d4d4d">订单备注</text>
+    </view>
+    <view class='order-detail-content-section flex-between'>
+      <text wx:if="{{orderInfo.remarks}}" class="color999">{{orderInfo.remarks}}</text>
+      <text wx:else class="color999">未填写备注</text>
+    </view>
+    <view class='order-detail-content-section flex-between color999'>
+      <text class="color999">用餐人数</text>
+      <text class="color999">{{orderInfo.number}}</text>
+    </view>
+  </view>
+  <view class="order-detail-content">
+    <view class='order-detail-content-title flex-between'>
+      <text class="font28" style="color:#4d4d4d">订单信息</text>
+    </view>
+    <view class='order-detail-content-section flex-between'>
+      <text class="color999">订单号</text>
+      <text class="color999">{{orderInfo.order_num}}</text>
+    </view>
+    <view class='order-detail-content-section flex-between'>
+      <text class="color999">下单时间</text>
+      <text class="color999">{{orderInfo.create_at}}</text>
+    </view>
+    <view class='order-detail-content-section flex-between' wx:if="{{orderInfo.update_at}}">
+      <text class="color999">更新时间</text>
+      <text class="color999">{{orderInfo.update_at}}</text>
+    </view>
+    <view class='order-detail-content-section flex-between' wx:if="{{orderInfo.update_at}}">
+      <text class="color999">订单状态</text>
+      <block wx:if="{{orderInfo.order_state == 7}}">
+        <text class="color999">已下单</text>
+      </block> 
+      <block wx:if="{{orderInfo.order_state == 8}}">
+        <text class="color999">已确认</text>
+      </block>
+      <block wx:if="{{orderInfo.order_state == 9}}">
+        <text class="color999">上菜中</text>
+      </block> 
+      <block wx:if="{{orderInfo.order_state == 10}}">
+        <text class="color999">完成上菜</text>
+      </block>
+      <block wx:if="{{orderInfo.order_state == 11}}">
+        <text class="color999">已完成</text>
+      </block> 
+      <block wx:if="{{orderInfo.order_state == 15}}">
+        <text class="color999">续单待确认</text>
+      </block> 
+      <block wx:if="{{orderInfo.order_state == 17}}">
+        <text class="color999">取消订单</text>
+      </block> 
+    </view>
+  </view>
+</view>
+<view class="bottomContainer flex-between" wx:if="{{orderInfo.order_state != 17 &&  orderInfo.order_state != 11}}">
+    <view>
+      <text class="font36">待支付 ¥{{orderInfo.money}}</text>
+      <text class="font24 color999">｜优惠 ¥{{orderInfo.discount}}</text>
+    </view>
+    <view class="confirmPay}}" bindtap="confirmPay">去支付</view>
+</view>

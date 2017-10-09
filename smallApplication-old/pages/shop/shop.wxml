@@ -1,0 +1,313 @@
+<!--shop.wxml-->
+<scroll-view class="noScrollPage">
+  <view class="shopHeader">
+    <view class="shopHeaderMain">
+      <image src="{{tenantData.cover}}" class="shopHeaderLogo" wx:if="{{tenantData.cover}}"></image>
+      <view class="shopHeaderDesc">
+          <text class="shopHeaderDescTitle">{{tenantData.tenant_name}}</text>
+          <!-- <view class="flex">
+            <text class="afterSplit">蜂鸟专送</text>
+            <text class="afterSplit">21分钟送达</text>
+            <text>配送费￥2.5</text>
+          </view> -->
+          <text>公告：{{tenantData.state}}</text>
+      </view>
+    </view>
+    <view class="shopHeaderDescMore">
+      <view class="flex-between">
+        <swiper  autoplay="true" interval="3000" duration="1000" vertical="true" class="shopHeaderDescMoreSwiper">
+          <block wx:for="{{tenantData.discount}}" wx:for-item="discountItem">
+            <swiper-item>
+              <view class="flex">
+                <block wx:if="{{discountItem.discount_type == 1}}">
+                  <text class="tip-jian">折</text>
+                </block>
+                <block wx:if="{{discountItem.discount_type == 2}}">
+                  <text class="tip-jian">减</text>
+                </block> 
+                <text>{{discountItem.discribe}}</text>
+              </view>
+            </swiper-item>
+          </block>
+        </swiper>
+        <view class="activityNum">
+          <text>{{tenantData.discount_length}}个活动</text>
+        </view>
+      </view>
+    </view>
+  </view>
+  <view class="tabContainer flex">
+    <view class="tab-item {{activeIndex == 0 ? 'tab-item-active' : ''}}" bindtap="tabClick" data-tab="0">
+      <view class="tab-item-title">商品</view>
+    </view>
+    <view class="tab-item {{activeIndex == 1 ? 'tab-item-active' : ''}}" bindtap="tabClick" data-tab="1">
+      <view class="tab-item-title">评价</view>
+    </view>
+    <view class="tab-item {{activeIndex == 2 ? 'tab-item-active' : ''}}" bindtap="tabClick" data-tab="2">
+      <view class="tab-item-title">店铺</view>
+    </view>
+  </view>
+  <swiper  autoplay="{{false}}"  duration="500" class="tabContentContainer" current="{{activeIndex}}" bindchange="changeTab">
+    <block>
+      <swiper-item class="height100">
+        <view class="height100">
+          <view class="height100 flex">
+            <scroll-view scroll-y class="productTypeContainer">
+              <block wx:for="{{dishes}}" wx:for-index="index">
+                <view class="productTypeItem {{index == productTypeActive ? 'productTypeItemActive' : ''}}" bindtap='dishChange' data-tab="{{index}}">
+                  <!-- <image src="../../images/hot.jpeg" class="productTypeItemIcon"></image> -->
+                  <text>{{item.content}}</text>
+                </view>
+              </block>   
+            </scroll-view>
+            <scroll-view scroll-y class="productsContainer">
+              <view class="productsHeader">
+                <view>
+                  <text class="productsHeaderTitle">{{dishes[productTypeActive].content}}</text>
+                  <!-- <text class="productsHeaderTitleDesc">大家喜欢吃，才叫真好吃。</text> -->
+                </view>
+              </view>
+              <block  wx:for="{{dishes[productTypeActive].dish}}">
+                <view class="productsItem">
+                  <image src="{{item.img}}" class="productsItemImg"></image>
+                  <view class="productsItemDescContainer">
+                    <view class="productsItemDescTitle">{{item.dish_name}}</view>
+                    <view class="productsItemDescDetail">
+                      <!-- <text>月售1187份</text>
+                      <text class="npsp">好评率97%</text> -->
+                      <text class="text-ellipsis">{{item.describe || '暂无描述'}}</text>
+                    </view>
+                    <view class="footDetail">
+                      <text class="footDetailBefore">￥</text>
+                      <text class="rightSplit">{{item.price}}</text>
+                      <block wx:if="{{item.spec}}">
+                        <text class="fontDetailLow">起</text>
+                      </block>
+                      <text class="oldPrice" wx:if="{{item.old_price}}">{{item.old_price}}</text>
+                    </view>
+                    <block wx:if="{{item.spec}}">
+                      <view class="footDetailAdd flex">
+                        <block wx:if="{{selectedDishes[item.dish_id]}}">
+                          <view class="foodPlus" bindtap='notRemove'>－</view>
+                          <view class="foodNum" >{{selectedDishes[item.dish_id].num}}</view>
+                        </block>
+                        <view class="chooseSpec" bindtap="showchooseTypeModal" data-dish="{{item}}">选规格</view>
+                      </view>
+                    </block>
+                    <block wx:else>
+                      <view class="footDetailAdd flex">
+                        <block wx:if="{{selectedDishes[item.dish_id]}}">
+                          <view class="foodPlus" bindtap='removeCart' data-dish="{{item}}">﹣</view>
+                          <view class="foodNum" >{{selectedDishes[item.dish_id].num}}</view>
+                        </block>
+                        <view class="foodAdd" bindtap='addCart' data-dish="{{item}}">＋</view>
+                      </view>
+                    </block>
+                  </view> 
+                </view>
+              </block>
+            </scroll-view>
+          </view>
+        </view>
+      </swiper-item>
+      <swiper-item>
+        <scroll-view scroll-y class="height100">
+          <view class="container">
+            <view class="text-center">
+              <view><icon type="warn" size="40" color=""/></view>
+              <view class="closed">评价系统暂未开放</view>
+            </view>
+          </view>          
+        </scroll-view>
+      </swiper-item>
+      <swiper-item>
+        <scroll-view scroll-y class="height100">
+        <!-- <view class="container">
+          <view class="text-center">
+            <view><icon type="warn" size="40" color=""/></view>
+            <view class="closed">店铺详情暂未开放</view>
+          </view>
+        </view> -->
+          <view class="shopDetail">
+            <view class="panel">
+              <view class="panel-title">活动与服务</view>
+              <view class="panel-content">
+                <block wx:if="{{tenantData.discount_length > 0}}">
+                  <block wx:for="{{tenantData.discount}}" wx:for-item="discountItem">
+                    <view class="flex shopDetail-discountItem font22">
+                      <block wx:if="{{discountItem.discount_type == 1}}">
+                        <text class="tip-jian">折</text>
+                      </block>
+                      <block wx:if="{{discountItem.discount_type == 2}}">
+                        <text class="tip-jian">减</text>
+                      </block> 
+                      <text>{{discountItem.discribe}}</text>
+                    </view>
+                  </block>
+                </block>
+                <block wx:else>商家暂无活动</block>
+              </view>
+            </view>
+            <view class="panel">
+              <view class="panel-title">商家实景</view>
+              <view class="panel-content">
+                <view class="panel-content-photo-container flex">
+                  <view class='panel-content-photo-item-container' data-src='{{tenantData.cover}}' bindtap='previewImage'>
+                    <image src='{{tenantData.cover}}' class="panel-content-photo" wx:if="{{tenantData.cover}}"></image>
+                    <text class='panel-content-photo-text'>门面(1张)</text>
+                  </view>
+                </view>
+              </view>
+            </view>
+            <view class="panel" style="padding-bottom:0">
+              <view class="panel-title">商家信息</view>
+              <view class="panel-content">
+                <view class="flex-between shopDetail-info-line" bindtap='callPhone' data-phone="{{tenantData.phone}}">
+                  <text class="shopDetail-info-line-title">商家电话</text>
+                  <view class="flex">
+                    <text>{{tenantData.phone}}</text>
+                    <image src="../../images/right-grey.png" class="lineContentRight"></image>
+                  </view>
+                </view>
+                 <view class="flex-between shopDetail-info-line">
+                  <text class="shopDetail-info-line-title">商家联系人</text>
+                  <text>{{tenantData.contact}}</text>
+                </view>
+                <view class="flex-between shopDetail-info-line">
+                  <text class="shopDetail-info-line-title">地址</text>
+                  <text>{{tenantData.address}}</text>
+                </view>
+                 <view class="flex-between shopDetail-info-line">
+                  <text class="shopDetail-info-line-title">商户类型</text>
+                  <text>{{tenantData.type}}</text>
+                </view>
+                <view class="flex-between shopDetail-info-line">
+                  <text class="shopDetail-info-line-title">运营状态</text>
+                  <text>{{tenantData.state}}</text>
+                </view>
+              </view>
+            </view>
+          </view>
+        </scroll-view>
+      </swiper-item>
+    </block>
+  </swiper>
+  <view class="shop-bottom">
+    <block wx:if="{{selectedTotal.num > 0}}">
+      <view class="shop-bottom-car-notEmpty" bindtap="showModal">
+        <view class="shop-bottom-car-img-container"><text class="productNum">{{selectedTotal.num}}</text></view>
+      </view>
+    </block>
+    <block wx:else>
+      <view class="shop-bottom-car-empty">
+        <view class="shop-bottom-car-img-container"></view>
+      </view>
+    </block>
+    <view class="flex-between  height100">
+      <view class="totalMoneyContainer height100">
+        <view class="totalMoney">￥{{selectedTotal.sum}}</view>
+        <!-- <view class="classname">配送费￥2.5</view> -->
+      </view>
+      <block wx:if="{{selectedTotal.sum == 0}}">
+        <view class="productCarDesc">暂无选购</view>
+      </block>
+      <block wx:else>
+        <view class="goPay" bindtap='goPay'>
+          <text wx:if="{{isOver}}">去下单</text>
+          <text wx:else>去加菜</text>
+        </view>
+      </block>
+    </view>
+  </view>
+  <!--购物车预览  -->
+  <view class="mask" bindtap="closeproductsCart" wx:if="{{productsCartShow}}" catchtouchmove="disMove"></view>
+  <view class="productsCartContainer" wx:if="{{productsCartShow}}" catchtouchmove="disMove">
+    <view class="productsCartContentMain">
+      <view class="productsCartHead">
+        <view class="productsCartHeadLeft">购物车</view>
+        <view class="productsCartHeadRight">
+          <image src="../../images/empty-grey.png" class="emptyImg"></image>
+          <view bindtap='emptyCart'>清空</view>
+        </view>
+      </view>
+      <scroll-view class="productsCartContent">
+        <block wx:for="{{selectedDishes}}" wx:for-index="dishId">
+          <block wx:if="{{item.spec}}">
+            <!--有规格商品  -->
+            <block wx:for="{{item.spec}}" wx:for-item="specItem" wx:for-index="specId">
+              <view class="product-list-item">
+                <view>
+                  <view>{{item.dish_name}}</view>      
+                  <view class="font20" style="color : #999">
+                  <block wx:for="{{specItem.specs}}" wx:for-item="specChild">
+                    <text>{{specChild.spec_name}}</text>
+                  </block>
+                  </view>
+                </view>
+                <view class="flex">
+                  <view class="footSum">{{(specItem.spec_price*specItem.num)}}</view> 
+                  <view class="flex width190">
+                    <view class="foodPlus" bindtap='removeCartSpec' data-dishid="{{dishId}}" data-specid="{{specId}}">﹣</view>
+                    <view class="foodNum">{{specItem.num}}</view>
+                    <view class="foodAdd" bindtap='addCartSpec' data-dishid="{{dishId}}" data-specid="{{specId}}">＋</view>
+                  </view>
+                </view>
+              </view>
+            </block>
+          </block>
+          <block wx:else>
+            <!--非规格商品  -->
+            <view class="product-list-item">
+              <text>{{item.dish_name}}</text>
+              <view class="flex">
+                <view class="footSum">{{item.price*item.num}}</view> 
+                <view class="flex width190">
+                  <view class="foodPlus" bindtap='removeCart' data-dish="{{item}}">-</view>
+                  <view class="foodNum">{{item.num}}</view>
+                  <view class="foodAdd" bindtap='addCart' data-dish="{{item}}">+</view>
+                </view>
+              </view>
+            </view>
+          </block>
+        </block>
+        <!-- <view class="product-list-item">
+          <text>餐盒</text>
+          <view class="flex">
+            <view class="footSum">4</view>
+            <view class="flex width190">
+              
+            </view>
+          </view>
+        </view> -->
+      </scroll-view>
+    </view>
+  </view>
+
+  <!--规格模态选择  -->
+  <view class="wxapp-modal" wx:if="{{chooseTypeModal}}" catchtouchmove="disMove">
+    <view class="content">
+      <view class="header">{{chooseDish.dish_name}}</view>
+      <view class="body">
+        <block wx:for="{{chooseDish.spec}}" wx:for-item="specGroup" wx:for-index="specGroupId">
+          <view class="bodyTitle">{{specGroup.title}}</view>
+          <radio-group  bindchange="chooseTypeChange">
+            <view class="flex">
+              <block wx:for="{{specGroup.child}}">
+                <label class="labelType {{item.spec_id == chooseType[specGroupId] ? 'labelTypeActive' : ''}}">{{item.spec_name}}<radio value="{{specGroupId+'-'+item.spec_id}}" hidden="{{true}}"/></label>
+              </block>
+            </view>
+          </radio-group>
+        </block>
+      </view>
+      <view class="footer">
+        <text class="footSum">{{chooseTypePrice}}</text>
+        <button bindtap="chooseConfirm">选好了</button>
+      </view>
+    </view>
+    <view class="mask" bindtap="closechooseTypeModal" catchtouchmove="disMove"></view>
+  </view>
+</scroll-view>
+<!--自定义toast提醒  -->
+<view class="xn-toast" wx:if="{{isShowToast}}">
+  {{toastText}}
+</view>

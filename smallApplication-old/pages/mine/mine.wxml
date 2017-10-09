@@ -1,0 +1,54 @@
+<!--logs.wxml-->
+<view>
+  <block wx:if="{{isLogin}}">
+    <view class="informationContainer">
+      <view class="informationLogoContainer"><image src="{{userInfo.avatarUrl}}" class="informationLogo" wx:if="{{userInfo.avatarUrl}}"></image></view>
+      <view class="informationContent">
+        <view class="userNmae">{{userInfo.nickName}}</view>
+        <view class="userPhone">
+          <image src="../../images/phone.png" class="userPhoneImg"></image>
+          <text>{{tel}}</text>
+        </view>
+      </view>
+      <!-- <image src="../../images/right.png" class="informationRight"></image> -->
+    </view>
+    <navigator url="../location/location">
+      <view class="lineContent">
+        <view class="lineContentLogo">
+          <image src="../../images/location.png" class="img100"></image>
+        </view>
+        <view class="lineContentText">
+          <text>我的位置</text>
+          <image src="../../images/right-grey.png" class="lineContentRight"></image>
+        </view>
+      </view>
+    </navigator>
+    <navigator url="../point/point">
+      <view class="lineContent">
+        <view class="lineContentLogo">
+          <image src="../../images/point.png" class="img100"></image>
+        </view>
+        <view class="lineContentText">
+          <text>我的积分</text>
+          <image src="../../images/right-grey.png" class="lineContentRight"></image>
+        </view>
+      </view>
+    </navigator>
+    <view class="margin-top10">
+      <button class="xn-default-button" bindtap='loginOut'>退出登录</button>
+    </view>
+  </block>
+  <block wx:else>
+    <navigator url="../login/login"  hover-class="none">
+      <view class="informationContainer">
+        <view class="informationContent">
+          <view class="userNmae">登录/注册</view>
+          <view class="userPhone">
+            <text>登陆后享受更多特权</text>
+          </view>
+        </view>
+        <image src="../../images/right.png" class="informationRight"></image>
+      </view>
+    </navigator>
+  </block>
+</view>

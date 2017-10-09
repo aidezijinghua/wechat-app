@@ -1,0 +1,7 @@
+<!--point.wxml-->
+<view class="container">
+  <view class="text-center">
+    <view><icon type="warn" size="40" color=""/></view>
+    <view class="closed">积分功能暂未开放</view>
+  </view>
+</view>

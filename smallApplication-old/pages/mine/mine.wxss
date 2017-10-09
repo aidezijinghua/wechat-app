@@ -1,0 +1,50 @@
+Page{
+  background-color: #f5f5f5
+}
+.informationContainer{
+  display: flex;
+  align-items: center;
+  padding: 50rpx 30rpx;
+  color: #fff;
+  background-color: #f65b25
+}
+.informationLogoContainer{
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: 50%;
+  overflow: hidden
+}
+.informationLogo{
+  width: 100%;
+  height: 100%
+}
+.informationContent{
+  /* width: 514rpx; */
+  flex: 1;
+  height: 94rpx;
+  margin-left: 36rpx;
+}
+.userNmae{
+  font-weight: 700;
+  font-size: 42rpx;
+  margin-bottom: 16rpx;
+  height: 50rpx;
+  line-height: 50rpx
+}
+.userPhone{
+  display: flex;
+  align-items: center;
+  font-size: 24rpx
+}
+.userPhoneImg{
+  width: 22rpx;
+  height: 22rpx
+}
+.informationRight{
+  width: 42rpx;
+  height: 42rpx;
+}
+.margin-top10{
+  margin-top: 20rpx
+}
+
